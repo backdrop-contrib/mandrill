@@ -186,6 +186,16 @@ function mandrill_mailsend($message, $function, $args = array()) {
               $status = isset($result['status']) ? $result['status'] : 'message';
               $error_message = isset($result['message']) ? $result['message'] : 'no message';
               $debug = print_r($result, TRUE);
+
+              $severity = WATCHDOG_ERROR;
+              $return = FALSE;
+              // Since we cannot do much about normal mail bounces do not treat
+              // them as errors, just notices.
+              if (isset($result['reject_reason']) && in_array($result['reject_reason'], array('hard-bounce', 'soft-bounce', 'spam'))) {
+                $severity = WATCHDOG_NOTICE;
+                $return = TRUE;
+              }
+
               watchdog('mandrill', 'Failed sending email from %from to %to. @status: @message <pre>@debug</pre>',
                 array(
                   '%from' => $message['from_email'],
@@ -194,8 +204,9 @@ function mandrill_mailsend($message, $function, $args = array()) {
                   '@message' => $error_message,
                   '@debug' => $debug,
                 ),
-                WATCHDOG_ERROR
+                $severity
               );
+              return $return;
             }
             return FALSE;
 
