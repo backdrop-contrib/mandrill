@@ -364,6 +364,54 @@ function mandrill_get_module_key_names() {
 }
 
 /**
+ * Runs the message through the theming system, and produces the correct
+ * plain-text message that will be fed to Mandrill.
+ */
+function mandrill_prepare_message($message) {
+    $module = $message['module'];
+    $key = $message['key'];
+    $to = $message['to'];
+    $subject = $message['subject'];
+    $body = $message['body'];
+
+    $hook = [
+        'mandrill_message__' . $key,
+        'mandrill_message__' . $module .'__'. $key,
+      ];
+
+    $variables = [
+        'module' => $module,
+        'key' => $key,
+        'recipient' => $to,
+        'subject' => $subject,
+        'body' => $body,
+      ];
+
+    $message['params']['plaintext'] = drupal_html_to_text($body);
+    $message['body'] = theme($hook, $variables);
+
+    return $message;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function mandrill_theme() {
+  $path = drupal_get_path('module', 'mandrill') . '/theme';
+
+  return [
+    'mandrill_message' => [
+        'variables' => ['module' => NULL, 'key' => NULL, 'recipient' => NULL, 'subject' => NULL, 'body' => NULL],
+        'template' => 'mandrill-message',
+        'pattern' => 'mandrill_message__',
+        'file' => 'mandrill.theme.inc',
+        'mail theme' => TRUE,
+        'path' => $path,
+      ]
+    ];
+}
+
+/**
  * Get a list of mandrill template objects.
  *
  * @return array

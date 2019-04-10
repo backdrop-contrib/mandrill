@@ -267,3 +267,33 @@ class MandrillMailSystem implements MailSystemInterface {
   }
 
 }
+
+/**
+ * Sends themable HTML emails through the Mandrill mail system.
+ *
+ * This class imitates the Mime Mail module and allows email messages to be
+ * themed and styled before being sent to Mandrill. It overcomes a problem that
+ * arises when using the Mime Mail and Mandrill modules together (see
+ * https://www.drupal.org/node/1863988) instead of producing
+ * a multipart email message, it feeds Mandrill the plain-text and the HTML
+ * version of the message separately.
+ */
+class MandrillHtmlMailSystem extends MandrillMailSystem {
+  /**
+   * Concatenate and wrap the email body for either plain-text or HTML emails.
+   *
+   * @param array $message
+   *   A message array, as described in hook_mail_alter().
+   *
+   * @return array
+   *   The formatted $message.
+   */
+  public function format(array $message) {
+    // Join the body array into one string.
+    if (is_array($message['body'])) {
+      $message['body'] = implode("\n\n", $message['body']);
+    }
+
+    return mandrill_prepare_message($message);
+  }
+}
