@@ -69,7 +69,26 @@ class MandrillMailSystem implements MailSystemInterface {
     }
 
     // Extract an array of recipients.
-    $to = mandrill_get_to($message['to']);
+    $to = mandrill_get_to($message);
+
+    // Work through bcc emails.
+    if (!empty($message['headers']['Bcc'])) {
+
+      // Parse emails & turn comma-separated string into array.
+      $bcc_recipients = mandrill_map_mail_recipients($message['headers']['Bcc'], 'bcc');
+
+      // If 'bcc_email' wasn't explicitly set within the code & we have only
+      // one bcc recipient then we can use Mandrill's 'bcc_email' argument
+      // to set bcc recipient properly.
+      if (empty($message['bcc_email']) && count($bcc_recipients) == 1) {
+        $message['bcc_email'] = $bcc_recipients[0]['email'];
+      }
+      // Otherwise we have to add all bcc recipients to the list of primary
+      // recipients with "bcc" tag for each recipient.
+      else {
+        $to = array_merge($to, $bcc_recipients);
+      }
+    }
 
     // Prepare headers, defaulting the reply-to to the from address since
     // Mandrill needs the from address to be configured separately.

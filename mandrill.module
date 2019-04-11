@@ -161,7 +161,7 @@ function mandrill_mailsend($message, $function, $args = array()) {
       watchdog('mandrill', 'Error sending email from %from to %to. Function %function not found.',
         array(
           '%from' => $message['from_email'],
-          '%to' => $message['to'],
+          '%to' => $message['to'][0]['email'],
           '%function' => $function,
         ),
         WATCHDOG_ERROR
@@ -628,26 +628,55 @@ function mandrill_mail_key_blacklist() {
 /**
  * Helper to generate an array of recipients.
  *
- * @param mixed $to
- *   a comma delimited list of email addresses in 1 of 2 forms:
- *   user@domain.com
- *   any number of names <user@domain.com>
- * 
+ * @param $message array
+ *   An array containing the email data.
+ *
  * @return array
- *   array of email addresses
+ *   An array of email addresses.
  */
-function mandrill_get_to($to) {
+function mandrill_get_to($message) {
+
+  // Turn comma-separated string of recipients into Mandrill-style array.
+  // See https://mandrillapp.com/api/docs/messages.html for reference.
+  $recipients = mandrill_map_mail_recipients($message['to']);
+
+  // Add "cc" recipients to the list of primary recipients with tag "cc".
+  // It will be later handled in Mandrill to set the right headers / recipients.
+  if (!empty($message['headers']['Cc'])) {
+    $recipients = array_merge($recipients, mandrill_map_mail_recipients($message['headers']['Cc'], 'cc'));
+    unset($message['headers']['Cc']);
+  }
+
+  return $recipients;
+}
+
+/**
+ * Parses & creates Mandrill-style array with recipients.
+ *
+ * @see https://mandrillapp.com/api/docs/messages.html
+ *
+ * @param $emails string
+ *   Comma-separated string with emails.
+ *
+ * @param string $type string
+ *   Type of email. Mandrill supports "to", "cc" and "bcc".
+ *
+ * @return array
+ *   Array of recipients.
+ */
+function mandrill_map_mail_recipients($emails, $type = 'to') {
   $recipients = array();
-  $to_array = explode(',', $to);
-  foreach ($to_array as $email) {
+  $email_array = explode(',', $emails);
+  foreach ($email_array as $email) {
     if (preg_match(MANDRILL_EMAIL_REGEX, $email, $matches)) {
       $recipients[] = array(
         'email' => $matches[2],
         'name' => $matches[1],
+        'type' => $type,
       );
     }
     else {
-      $recipients[] = array('email' => $email);
+      $recipients[] = array('email' => $email, 'type' => $type);
     }
   }
   return $recipients;
