@@ -175,7 +175,7 @@ function mandrill_mailsend($message, $function, $args = array()) {
     if (!isset($response['status'])) {
       foreach ($response as $result) {
         // Allow other modules to react based on a send result.
-        module_invoke_all('mandrill_mailsend_result', $result);
+        module_invoke_all('mandrill_mailsend_result', $result, $params);
 
         switch ($result['status']) {
           case "error":
