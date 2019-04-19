@@ -106,7 +106,13 @@ class MandrillMailSystem implements MailSystemInterface {
     if (isset($message['attachments']) && !empty($message['attachments'])) {
       foreach ($message['attachments'] as $attachment) {
         if (is_file($attachment)) {
-          $attachments[] = $this->getAttachmentStruct($attachment);
+          try {
+            $attachments[] = $this->getAttachmentStruct($attachment);
+          }
+          catch (\Exception $e) {
+            $attachments[] = NULL;
+            watchdog('php', 'Error message: %error\n%object', array('%error' => $e->getMessage() . ' Email was sent without this attachment: ' . $attachment . '\n File: ' . $e->getFile() . ' Line: ' . $e->getLine(), '%object' => 'Object: ' . var_export($attachment, TRUE)), WATCHDOG_ERROR);
+          }
         }
       }
     }
