@@ -727,3 +727,10 @@ function mandrill_from($from = '') {
 
   return array_merge($default, $provided);
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function mandrill_form_mailsystem_admin_settings_alter(&$form, &$form_state, $form_id) {
+  $form['mailsystem']['mailsystem_theme']['#description'] .= t(" If using MandrillHtmlMailSystem above, you can control your email theming by copying file sites/all/modules/mandrill/theme/mandrill-message.tpl.php into your theme's templates directory. For example to sites/all/themes/theme-name/templates.");
+}
