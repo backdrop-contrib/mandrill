@@ -73,10 +73,10 @@ class DrupalMandrill extends Mandrill {
 
     if (!empty($response->error)) {
       if($response->error == "Internal Server Error") {
-        throw new Mandrill_HttpError('Mandrill API call to !url failed: @msg', array('!url' => $url, '@msg' => $response->error . $response->data));
+        throw new Mandrill_HttpError('Mandrill API call to '.$url.' failed: '. $response->error . ' '. $response->data);
       }
       else {
-        throw new Mandrill_HttpError('Mandrill API call to !url failed: @msg', array('!url' => $url, '@msg' => $response->error));
+        throw new Mandrill_HttpError('Mandrill API call to '.$url.' failed: '. $response->error);
       }
     }
 
