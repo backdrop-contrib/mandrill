@@ -142,7 +142,7 @@ function mandrill_mail($key, &$message, $params) {
 
 /**
  * Abstracts sending of messages, allowing queueing option.
- * 
+ *
  * @param array $message
  *   A message array formatted for Mandrill's sending API, plus 2 additional
  *   indexes for the send_function and an array of $args, if needed by the send
@@ -169,7 +169,8 @@ function mandrill_mailsend($message, $function, $args = array()) {
       return FALSE;
     }
 
-    $params = array($message) + $args;
+    // PHP 8 compatibility: convert string array keys to numbers.
+    $params = array_merge(array($message), array_values($args));
     $response = call_user_func_array($function, $params);
 
     if (!isset($response['status'])) {
@@ -254,12 +255,12 @@ function mandrill_mailsend($message, $function, $args = array()) {
 
 /**
  * The actual function that calls the API send message.
- * 
+ *
  * This is the default function used by mandrill_mailsend().
- * 
+ *
  * @param array $message
  *   Associative array containing message data.
- * 
+ *
  * @return array
  *   Results of sending the message.
  *
