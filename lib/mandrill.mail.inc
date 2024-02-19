@@ -105,7 +105,7 @@ class MandrillMailSystem implements MailSystemInterface {
     $attachments = array();
     if (isset($message['attachments']) && !empty($message['attachments'])) {
       foreach ($message['attachments'] as $attachment) {
-        if (is_file($attachment)) {
+        if (is_string($attachment) && is_file($attachment)) {
           try {
             $attachments[] = $this->getAttachmentStruct($attachment);
           }
