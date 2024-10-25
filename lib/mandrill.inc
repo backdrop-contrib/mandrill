@@ -22,8 +22,7 @@ class BackdropMandrill extends Mandrill {
     }
     $this->apikey = $apikey;
 
-    $library = libraries_load('mandrill');
-    $this->userAgent = "Mandrill-PHP/{$library['version']}";
+    $this->userAgent = 'Mandrill-PHP/1.0.52';
     $this->timeout = $timeout;
 
     $this->root = rtrim($this->root, '/') . '/';

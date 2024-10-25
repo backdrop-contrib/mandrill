@@ -32,7 +32,6 @@ class MandrillHooksTestCase extends BackdropWebTestCase {
     $this->profile = $prof;
     // Enable modules required for the test.
     $enabled_modules = array(
-      'libraries',
       'mandrill',
       'mandrill_test',
       'entity',
