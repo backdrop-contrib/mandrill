@@ -1,6 +1,6 @@
 ## SUMMARY
 
-Integrates Drupal's mail system with Mandrill transactional emails, a service
+Integrates Backdrop's mail system with Mandrill transactional emails, a service
 by the folks behind MailChimp. Learn more about Mandrill and how to sign up at
 [their website](http://mandrill.com). (Or don't, but then this module isn't
 terribly useful...)
@@ -79,7 +79,7 @@ greater than 0.
 ### SEND TEST EMAIL
 
 The Send Test Email function is pretty self-explanatory. The To: field will
-accept multiple addresses formatted in any Drupal mail system approved way.
+accept multiple addresses formatted in any Backdrop mail system approved way.
 By configuring the Mandrill Test module/key pair in Mail System, you can
 use this tool to test outgoing mail for any installed mailer.
 
@@ -114,7 +114,7 @@ can make Mandrill the default mail system and make that Template Map the
 default template, or you can clone the Template Map for each module/key pair
 and assign them individually.
 
-To send values from Drupal to Mandrill that will be used to substitute the
+To send values from Backdrop to Mandrill that will be used to substitute the
 template regions you should implement hook_mail_alter() and add your values in
 the 'mandrill_template_content' key in the $message array as an array with two
 keys: name and content.
@@ -149,7 +149,7 @@ Shows account information, quotas, and all-time usage stats.
 
 ## Activity
 The Mandrill Activity sub-modules allows users to view email activity for any
-Drupal entity with a valid email address. Configuration and usage details are in
+Backdrop entity with a valid email address. Configuration and usage details are in
 sub-module's README file.
 
 ## Advanced Options

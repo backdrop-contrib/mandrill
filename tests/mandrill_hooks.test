@@ -4,7 +4,7 @@
  * Test class and methods for the Mandrill Test module.
  */
 
-class MandrillHooksTestCase extends DrupalWebTestCase {
+class MandrillHooksTestCase extends BackdropWebTestCase {
   /**
    * Returns info displayed in the test interface.
    *
@@ -28,7 +28,7 @@ class MandrillHooksTestCase extends DrupalWebTestCase {
    */
   protected function setUp() {
     // Use a profile that contains required modules:
-    $prof = drupal_get_profile();
+    $prof = backdrop_get_profile();
     $this->profile = $prof;
     // Enable modules required for the test.
     $enabled_modules = array(
@@ -38,7 +38,7 @@ class MandrillHooksTestCase extends DrupalWebTestCase {
       'entity',
     );
     parent::setUp($enabled_modules);
-    variable_set('mandrill_api_classname', 'DrupalMandrillTest');
+    variable_set('mandrill_api_classname', 'BackdropMandrillTest');
     variable_set('mandrill_api_key', 'MANDRILL_TEST_API_KEY');
   }
 
@@ -74,7 +74,7 @@ class MandrillHooksTestCase extends DrupalWebTestCase {
      * Perform alterations on the message.
      * @see mandrill_test_mandrill_mail_alter()
      */
-    drupal_alter('mandrill_mail', $mandrill_params, $message);
+    backdrop_alter('mandrill_mail', $mandrill_params, $message);
 
     // Test altered values.
     $this->assertEqual($mandrill_params['message']['subject'], 'Altered Test Subject', 'Tested altered mail subject.');
@@ -99,7 +99,7 @@ class MandrillHooksTestCase extends DrupalWebTestCase {
      * Perform alterations on the attachment types array.
      * @see mandrill_test_mandrill_valid_attachment_types_alter()
      */
-    drupal_alter('mandrill_valid_attachment_types', $types);
+    backdrop_alter('mandrill_valid_attachment_types', $types);
 
     $this->assertTrue(in_array('application/pdf', $types), 'Tested altered attachment types.');
   }

@@ -1,8 +1,7 @@
 <?php
-
 /**
  * @file
- * Enables Drupal to send email using Mandrill's template system.
+ * Enables Backdrop to send email using Mandrill's template system.
  */
 
 /**

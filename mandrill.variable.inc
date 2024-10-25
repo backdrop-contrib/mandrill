@@ -84,7 +84,7 @@ function mandrill_variable_info($options) {
   );
   $variables['mandrill_mail_key_blacklist'] = array(
     'title' => t('Content logging blacklist', array(), $options),
-    'description' => t('Comma delimited list of Drupal mail keys to exclude content logging for. CAUTION: Removing the default password reset key may expose a security risk.', array(), $options),
+    'description' => t('Comma delimited list of Backdrop mail keys to exclude content logging for. CAUTION: Removing the default password reset key may expose a security risk.', array(), $options),
     'type' => 'text',
     'group' => 'mandrill',
     'default' => mandrill_mail_key_blacklist(),

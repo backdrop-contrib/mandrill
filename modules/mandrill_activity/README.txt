@@ -11,7 +11,7 @@ and Entity API module [http://drupal.org/project/entity]([http://drupal.org/proj
 
 1. Define which entity types you want to show Mandrill activity for at
 /admin/config/services/mandrill/activity.
-  * Select a Drupal entity type.
+  * Select a Backdrop entity type.
   * Select a bundle.
   * Select the email entity property.
 2. Configure permissions for viewing Mandrill activity.

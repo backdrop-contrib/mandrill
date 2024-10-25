@@ -2,11 +2,11 @@
 
 /**
  * @file
- * Implements Mandrill as a Drupal MailSystemInterface
+ * Implements Mandrill as a Backdrop MailSystemInterface
  */
 
 /**
- * Modify the drupal mail system to use Mandrill when sending emails.
+ * Modify the backdrop mail system to use Mandrill when sending emails.
  */
 class MandrillMailSystem implements MailSystemInterface {
 
@@ -35,7 +35,7 @@ class MandrillMailSystem implements MailSystemInterface {
   /**
    * Send the email message.
    *
-   * @see drupal_mail()
+   * @see backdrop_mail()
    *
    * @param array $message
    *   A message array, as described in hook_mail_alter().
@@ -121,7 +121,7 @@ class MandrillMailSystem implements MailSystemInterface {
     $blacklisted_keys = explode(',', mandrill_mail_key_blacklist());
     $view_content = TRUE;
     foreach ($blacklisted_keys as $key) {
-      if ($message['id'] == drupal_strtolower(trim($key))) {
+      if ($message['id'] == backdrop_strtolower(trim($key))) {
         $view_content = FALSE;
         break;
       }
@@ -140,7 +140,7 @@ class MandrillMailSystem implements MailSystemInterface {
          else {
            $attachment_path = $attachment['filepath'];
          }
-         $attachment_path = drupal_realpath($attachment_path);
+         $attachment_path = backdrop_realpath($attachment_path);
           if (is_file($attachment_path)) {
             $struct = $this->getAttachmentStruct($attachment_path);
             // Allow for customised filenames.
@@ -161,12 +161,12 @@ class MandrillMailSystem implements MailSystemInterface {
         }
       }
       // Remove the file objects from $message['params']['attachments'].
-      // (This prevents double-attaching in the drupal_alter hook below.)
+      // (This prevents double-attaching in the backdrop_alter hook below.)
       unset($message['params']['attachments']);
     }
 
     // Account for the plaintext parameter provided by the mimemail module.
-    $plain_text = empty($message['params']['plaintext']) ? drupal_html_to_text($message['body']) : $message['params']['plaintext'];
+    $plain_text = empty($message['params']['plaintext']) ? backdrop_html_to_text($message['body']) : $message['params']['plaintext'];
 
     // Get metadata.
     $metadata = isset($message['metadata']) ? $message['metadata'] : array();
@@ -187,7 +187,7 @@ class MandrillMailSystem implements MailSystemInterface {
       'headers' => $headers,
       'track_opens' => variable_get('mandrill_track_opens', TRUE),
       'track_clicks' => variable_get('mandrill_track_clicks', TRUE),
-      // We're handling this with drupal_html_to_text().
+      // We're handling this with backdrop_html_to_text().
       'auto_text' => FALSE,
       'url_strip_qs' => variable_get('mandrill_url_strip_qs', FALSE),
       'bcc_address' => isset($message['bcc_email']) ? $message['bcc_email'] : NULL,
@@ -208,12 +208,12 @@ class MandrillMailSystem implements MailSystemInterface {
       'function' => 'mandrill_sender_plain',
       'args' => array(),
     );
-    drupal_alter('mandrill_mail', $mandrill_params, $message);
+    backdrop_alter('mandrill_mail', $mandrill_params, $message);
 
     // Queue for processing during cron or send immediately.
     $status = NULL;
     if (mandrill_process_async()) {
-      $queue = DrupalQueue::get(MANDRILL_QUEUE, TRUE);
+      $queue = BackdropQueue::get(MANDRILL_QUEUE, TRUE);
       $queue->createItem($mandrill_params);
       if (variable_get('mandrill_batch_log_queued', TRUE)) {
         watchdog('mandrill', 'Message from %from to %to queued for delivery.',
@@ -280,7 +280,7 @@ class MandrillMailSystem implements MailSystemInterface {
       'application/pdf',
       'application/x-zip',
     );
-    drupal_alter('mandrill_valid_attachment_types', $valid_types);
+    backdrop_alter('mandrill_valid_attachment_types', $valid_types);
 
     foreach ($valid_types as $vct) {
       if (strpos($file_type, $vct) !== FALSE) {

@@ -22,7 +22,7 @@
  */
 function template_preprocess_mandrill_message(&$variables) {
   $theme = mailsystem_get_mail_theme();
-  $themepath = drupal_get_path('theme', $theme);
+  $themepath = backdrop_get_path('theme', $theme);
 
   $sitestyle = variable_get('mandrill_sitestyle', 1);
   $mailstyles = file_scan_directory($themepath, '#^mail\.css*$#');
@@ -39,10 +39,10 @@ function template_preprocess_mandrill_message(&$variables) {
     // Grab local.css if it exists (support for Fusion based themes).
     $local = $themepath . '/css/local.css';
     if (@file_exists($local)) {
-      $css_all = drupal_add_css($local, ['group' => CSS_THEME]);
+      $css_all = backdrop_add_css($local, ['group' => CSS_THEME]);
     }
     else {
-      $css_all = drupal_add_css();
+      $css_all = backdrop_add_css();
     }
     $css_files = [];
     foreach ($css_all as $key => $options) {
@@ -63,7 +63,7 @@ function template_preprocess_mandrill_message(&$variables) {
       ];
       $replacement = ['', '\1', '\1'];
     }
-    $styles = preg_replace($pattern, $replacement, drupal_get_css($css_files));
+    $styles = preg_replace($pattern, $replacement, backdrop_get_css($css_files));
   }
 
   $css = '';
@@ -71,7 +71,7 @@ function template_preprocess_mandrill_message(&$variables) {
     // Process each style sheet.
     foreach (explode("\n", $styles) as $style) {
       if (!empty($style)) {
-        $css .= drupal_load_stylesheet($style, TRUE);
+        $css .= backdrop_load_stylesheet($style, TRUE);
       }
     }
 

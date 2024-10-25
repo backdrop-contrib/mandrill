@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Enables Drupal to send email directly through Mandrill.
+ * Enables Backdrop to send email directly through Mandrill.
  */
 
 
@@ -28,7 +28,7 @@ function mandrill_menu() {
   $items = array();
   $items['admin/config/services/mandrill'] = array(
     'title' => 'Mandrill',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('mandrill_admin_settings'),
     'access arguments' => array('administer mandrill'),
     'description' => 'Send emails through the Mandrill transactional email service.',
@@ -42,7 +42,7 @@ function mandrill_menu() {
   );
   $items['admin/config/services/mandrill/test'] = array(
     'title' => 'Send test email',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('mandrill_test_form'),
     'access callback' => 'mandrill_test_access',
     'description' => 'Send a test email using the Mandrill API.',
@@ -134,8 +134,8 @@ function mandrill_mail($key, &$message, $params) {
     $message['subject'] = $params['subject'];
     $message['body'] = $params['body'];
     if ($params['include_attachment']) {
-      $message['attachments'][] = drupal_realpath('misc/druplicon.png');
-      $message['body'] .= '  ' . t('The Drupal icon is included as an attachment to test the attachment functionality.');
+      $message['attachments'][] = backdrop_realpath('core/misc/icon-ok.png');
+      $message['body'] .= '  ' . t('The Backdrop OK icon is included as an attachment to test the attachment functionality.');
     }
   }
 }
@@ -286,7 +286,7 @@ function mandrill_sender_plain($message) {
  *   FALSE if variable_get('mandrill_api_key') is unset
  */
 function mandrill_get_api_object($reset = FALSE) {
-  $api =& drupal_static(__FUNCTION__, NULL);
+  $api =& backdrop_static(__FUNCTION__, NULL);
 
   if ($api === NULL || $reset === TRUE) {
 
@@ -294,7 +294,7 @@ function mandrill_get_api_object($reset = FALSE) {
     if (!$library['installed']) {
       $msg = t('Failed to load Mandrill PHP library. Please refer to the installation requirements.');
       watchdog('mandrill', $msg, NULL, WATCHDOG_ERROR);
-      drupal_set_message($msg, 'error');
+      backdrop_set_message($msg, 'error');
       return NULL;
     }
 
@@ -302,14 +302,14 @@ function mandrill_get_api_object($reset = FALSE) {
     $api_timeout = variable_get('mandrill_api_timeout', 60);
     if (empty($api_key)) {
       $msg = t('Failed to load Mandrill API Key. Please check your Mandrill settings.');
-      drupal_set_message($msg, 'error');
+      backdrop_set_message($msg, 'error');
       return FALSE;
     }
 
     // We allow the class name to be overridden, following the example of core's
     // mailsystem, in order to use alternate Mandrill classes. The bundled tests
     // use this approach to extend the Mandrill class with a test server.
-    $classname = variable_get('mandrill_api_classname', 'DrupalMandrill');
+    $classname = variable_get('mandrill_api_classname', 'BackdropMandrill');
     $api = new $classname($api_key, $api_timeout);
   }
 
@@ -388,7 +388,7 @@ function mandrill_prepare_message($message) {
         'body' => $body,
       ];
 
-    $message['params']['plaintext'] = drupal_html_to_text($body);
+    $message['params']['plaintext'] = backdrop_html_to_text($body);
     $message['body'] = theme($hook, $variables);
 
     return $message;
@@ -398,7 +398,7 @@ function mandrill_prepare_message($message) {
  * Implements hook_theme().
  */
 function mandrill_theme() {
-  $path = drupal_get_path('module', 'mandrill') . '/theme';
+  $path = backdrop_get_path('module', 'mandrill') . '/theme';
 
   return [
     'mandrill_message' => [
@@ -427,7 +427,7 @@ function mandrill_get_templates() {
     }
   }
   catch (Mandrill_Error $e) {
-    drupal_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
+    backdrop_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
     watchdog_exception('mandrill', $e);
   }
   return $templates;
@@ -444,7 +444,7 @@ function mandrill_get_subaccounts() {
     }
   }
   catch (Mandrill_Error $e) {
-    drupal_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
+    backdrop_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
     watchdog_exception('mandrill', $e);
   }
 
@@ -462,7 +462,7 @@ function mandrill_get_webhooks() {
     }
   }
   catch (Mandrill_Error $e) {
-    drupal_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
+    backdrop_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
     watchdog_exception('mandrill', $e);
   }
 
@@ -483,7 +483,7 @@ function mandrill_get_inbound_domains() {
     }
   }
   catch (Mandrill_Error $e) {
-    drupal_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
+    backdrop_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
     watchdog_exception('mandrill', $e);
   }
 
@@ -501,7 +501,7 @@ function mandrill_get_inbound_routes($domain) {
     }
   }
   catch (Mandrill_Error $e) {
-    drupal_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
+    backdrop_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
     watchdog_exception('mandrill', $e);
   }
 
@@ -519,7 +519,7 @@ function mandrill_add_inbound_domain($domain) {
     }
   }
   catch (Mandrill_Error $e) {
-    drupal_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
+    backdrop_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
     watchdog_exception('mandrill', $e);
   }
 
@@ -529,7 +529,7 @@ function mandrill_add_inbound_domain($domain) {
 /**
  * Create a new webhook.
  */
-function mandrill_add_webhook($path, $events, $description = 'Drupal Webhook') {
+function mandrill_add_webhook($path, $events, $description = 'Backdrop Webhook') {
   $result = NULL;
   try {
     if ($mandrill = mandrill_get_api_object()) {
@@ -537,7 +537,7 @@ function mandrill_add_webhook($path, $events, $description = 'Drupal Webhook') {
     }
   }
   catch (Mandrill_Error $e) {
-    drupal_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
+    backdrop_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
     watchdog_exception('mandrill', $e);
   }
 
@@ -547,7 +547,7 @@ function mandrill_add_webhook($path, $events, $description = 'Drupal Webhook') {
 /**
  * Update an existing webhook.
  */
-function mandrill_update_webhook($id, $path, $events, $description = 'Drupal Webhook') {
+function mandrill_update_webhook($id, $path, $events, $description = 'Backdrop Webhook') {
   $result = NULL;
   try {
     if ($mandrill = mandrill_get_api_object()) {
@@ -555,7 +555,7 @@ function mandrill_update_webhook($id, $path, $events, $description = 'Drupal Web
     }
   }
   catch (Mandrill_Error $e) {
-    drupal_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
+    backdrop_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
     watchdog_exception('mandrill', $e);
   }
 
@@ -573,7 +573,7 @@ function mandrill_delete_webhook($webhook_id) {
     }
   }
   catch (Mandrill_Error $e) {
-    drupal_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
+    backdrop_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
     watchdog_exception('mandrill', $e);
   }
 
@@ -591,7 +591,7 @@ function mandrill_delete_inbound_domain($domain) {
     }
   }
   catch (Mandrill_Error $e) {
-    drupal_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
+    backdrop_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
     watchdog_exception('mandrill', $e);
   }
 
@@ -609,7 +609,7 @@ function mandrill_add_inbound_route($domain, $pattern, $url) {
     }
   }
   catch (Mandrill_Error $e) {
-    drupal_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
+    backdrop_set_message(t('Mandrill: %message', array('%message' => $e->getMessage())), 'error');
     watchdog_exception('mandrill', $e);
   }
 
