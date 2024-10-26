@@ -36,9 +36,9 @@ class MandrillTestCase extends BackdropWebTestCase {
       'entity',
     );
     parent::setUp($enabled_modules);
-    variable_set('mandrill_api_classname', 'BackdropMandrillTest');
-    variable_set('mandrill_api_key', 'MANDRILL_TEST_API_KEY');
-    variable_set('mandrill_test_mode', TRUE);
+    config_set('mandrill.settings', 'mandrill_api_classname', 'BackdropMandrillTest');
+    config_set('mandrill.settings', 'mandrill_api_key', 'MANDRILL_TEST_API_KEY');
+    config_set('mandrill.settings', 'mandrill_test_mode', TRUE);
   }
 
   /**
@@ -49,9 +49,10 @@ class MandrillTestCase extends BackdropWebTestCase {
   protected function tearDown() {
     parent::tearDown();
 
-    variable_del('mandrill_api_classname');
-    variable_del('mandrill_api_key');
-    variable_del('mandrill_test_mode');
+    //variable_del('mandrill_api_classname');
+    //variable_del('mandrill_api_key');
+    //variable_del('mandrill_test_mode');
+    // @todo ^^
   }
 
   /**

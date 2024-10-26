@@ -48,7 +48,7 @@ function mandrill_menu() {
  */
 function mandrill_test_access() {
   $a = user_access('administer mandrill');
-  $b = variable_get('mandrill_api_key');
+  $b = config_get('mandrill.settings', 'mandrill_api_key');
   return $a & !empty($b);
 }
 
@@ -72,7 +72,7 @@ function mandrill_cron_queue_info() {
   $queues = array();
   $queues[MANDRILL_QUEUE] = array(
     'worker callback' => 'mandrill_queue_worker_mailsend',
-    'time' => variable_get('mandrill_queue_worker_timeout', 15),
+    'time' => config_get('mandrill.settings', 'mandrill_queue_worker_timeout'),
   );
   return $queues;
 }
@@ -146,7 +146,7 @@ function mandrill_mailsend($message, $function, $args = array()) {
           case "error":
           case "invalid":
           case "rejected":
-            if (!variable_get('mandrill_test_mode')) {
+            if (!config_get('mandrill.settings', 'mandrill_test_mode')) {
               $to = isset($result['email']) ? $result['email'] : 'recipient';
               $status = isset($result['status']) ? $result['status'] : 'message';
               $error_message = isset($result['message']) ? $result['message'] : 'no message';
@@ -245,17 +245,18 @@ function mandrill_sender_plain($message) {
  * @param bool $reset
  *   Pass in TRUE to reset the statically cached object.
  *
- * @return Mandrill|bool
+ * @return Mandrill|false
  *   Mandrill Object upon success
- *   FALSE if variable_get('mandrill_api_key') is unset
+ *   FALSE if 'mandrill_api_key' is empty
  */
 function mandrill_get_api_object($reset = FALSE) {
   $api =& backdrop_static(__FUNCTION__, NULL);
 
   if ($api === NULL || $reset === TRUE) {
+    $config = config('mandrill.settings');
 
-    $api_key = variable_get('mandrill_api_key', '');
-    $api_timeout = variable_get('mandrill_api_timeout', 60);
+    $api_key = $config->get('mandrill_api_key');
+    $api_timeout = $config->get('mandrill_api_timeout');
     if (empty($api_key)) {
       $msg = t('Failed to load Mandrill API Key. Please check your Mandrill settings.');
       backdrop_set_message($msg, 'error');
@@ -265,7 +266,7 @@ function mandrill_get_api_object($reset = FALSE) {
     // We allow the class name to be overridden, following the example of core's
     // mailsystem, in order to use alternate Mandrill classes. The bundled tests
     // use this approach to extend the Mandrill class with a test server.
-    $classname = variable_get('mandrill_api_classname', 'BackdropMandrill');
+    $classname = $config->get('mandrill_api_classname');
     $api = new $classname($api_key, $api_timeout);
   }
 
@@ -579,7 +580,8 @@ function mandrill_add_inbound_route($domain, $pattern, $url) {
  *   a comma delimited list of mail keys
  */
 function mandrill_mail_key_blacklist() {
-  return variable_get('mandrill_mail_key_blacklist', 'user_password_reset');
+  $list = config_get('mandrill.settings', 'mandrill_mail_key_blacklist');
+  return ($list) ? $list : 'user_password_reset';
 }
 
 /**
@@ -646,7 +648,7 @@ function mandrill_map_mail_recipients($emails, $type = 'to') {
  *   True if asyncronous processing is enabled
  */
 function mandrill_process_async() {
-  return variable_get('mandrill_process_async', FALSE);
+  return (bool) config_get('mandrill.settings', 'mandrill_process_async');
 }
 
 /**
@@ -666,11 +668,11 @@ function mandrill_process_async() {
 function mandrill_from($from = '') {
   $default = array();
   $provided = array();
+  $config = config('mandrill.settings');
 
   // Parse out the default "from" details.
-  $default_from = variable_get('site_mail', ini_get('sendmail_from'));
-  $default['email'] = variable_get('mandrill_from', $default_from);
-  $default['name'] = variable_get('mandrill_from_name', variable_get('site_name'));
+  $default['email'] = ($config->get('mandrill_from')) ? $config->get('mandrill_from') : config_get('system.core', 'site_mail');
+  $default['name'] = ($config->get('mandrill_from_name')) ? $config->get('mandrill_from_name') : config_get('system.core', 'site_name');
 
   // If a "from" string was explicitly provided, parse out the details.
   if (preg_match_all('/(?:"?([^"]*)"?\s)?(?:<?(.+@[^>]+)>?)/', $from, $matches)) {
@@ -701,4 +703,15 @@ function mandrill_autoload_info() {
     'BackdropMandrill' => 'lib/mandrill.inc',
     'Mandrill' => 'libraries/mandrill/src/Mandrill.php',
   );
+}
+
+/**
+ * Implements hook_config_info().
+ */
+function mandrill_config_info() {
+  $prefixes['mandrill.settings'] = array(
+    'label' => t('Mandrill settings'),
+    'group' => t('Configuration'),
+  );
+  return $prefixes;
 }

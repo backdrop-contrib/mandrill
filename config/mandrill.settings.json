@@ -1,0 +1,21 @@
+{
+    "_config_name": "mandrill.settings",
+    "mandrill_analytics_campaign": "",
+    "mandrill_analytics_domains": "",
+    "mandrill_api_classname": "BackdropMandrill",
+    "mandrill_api_key": "",
+    "mandrill_api_timeout": 60,
+    "mandrill_batch_log_queued": true,
+    "mandrill_filter_format": "full_html",
+    "mandrill_from": null,
+    "mandrill_from_name": null,
+    "mandrill_log_defaulted_sends": false,
+    "mandrill_mail_key_blacklist": "user_password_reset",
+    "mandrill_process_async": false,
+    "mandrill_queue_worker_timeout": 15,
+    "mandrill_sitestyle": true,
+    "mandrill_subaccount": false,
+    "mandrill_track_clicks": true,
+    "mandrill_track_opens": true,
+    "mandrill_url_strip_qs": false
+}

@@ -25,7 +25,7 @@ class MandrillMailSystem implements MailSystemInterface {
       $message['body'] = implode("\n\n", $message['body']);
     }
     // Apply input format to body.
-    $format = variable_get('mandrill_filter_format', '');
+    $format = config_get('mandrill.settings', 'mandrill_filter_format');
     if (!empty($format)) {
       $message['body'] = check_markup($message['body'], $format);
     }
@@ -46,7 +46,8 @@ class MandrillMailSystem implements MailSystemInterface {
   public function mail(array $message) {
     // Optionally log mail keys not using Mandrill already. Helpful in
     // configuring Mandrill.
-    if (variable_get('mandrill_log_defaulted_sends', FALSE)) {
+    $config = config('mandrill.settings');
+    if ($config->get('mandrill_log_defaulted_sends')) {
       $systems = mailsystem_get();
       $registered = FALSE;
       foreach ($systems as $key => $system) {
@@ -185,20 +186,20 @@ class MandrillMailSystem implements MailSystemInterface {
       'from_name' => isset($message['params']['mandrill']['from_name']) ? $message['params']['mandrill']['from_name'] : $from['name'],
       'to' => $to,
       'headers' => $headers,
-      'track_opens' => variable_get('mandrill_track_opens', TRUE),
-      'track_clicks' => variable_get('mandrill_track_clicks', TRUE),
+      'track_opens' => $config->get('mandrill_track_opens'),
+      'track_clicks' => $config->get('mandrill_track_clicks'),
       // We're handling this with backdrop_html_to_text().
       'auto_text' => FALSE,
-      'url_strip_qs' => variable_get('mandrill_url_strip_qs', FALSE),
+      'url_strip_qs' => $config->get('mandrill_url_strip_qs'),
       'bcc_address' => isset($message['bcc_email']) ? $message['bcc_email'] : NULL,
       'tags' => array($message['id']),
-      'google_analytics_domains' => (variable_get('mandrill_analytics_domains', NULL)) ? explode(',', variable_get('mandrill_analytics_domains')) : array(),
-      'google_analytics_campaign' => variable_get('mandrill_analytics_campaign', ''),
+      'google_analytics_domains' => ($config->get('mandrill_analytics_domains')) ? explode(',', $config->get('mandrill_analytics_domains')) : array(),
+      'google_analytics_campaign' => $config->get('mandrill_analytics_campaign'),
       'attachments' => $attachments,
       'view_content_link' => $view_content,
       'metadata' => $metadata,
     );
-    $subaccount = variable_get('mandrill_subaccount', FALSE);
+    $subaccount = $config->get('mandrill_subaccount');
     if ($subaccount) {
       $mandrill_message['subaccount'] = $subaccount;
     }
@@ -215,7 +216,7 @@ class MandrillMailSystem implements MailSystemInterface {
     if (mandrill_process_async()) {
       $queue = BackdropQueue::get(MANDRILL_QUEUE, TRUE);
       $queue->createItem($mandrill_params);
-      if (variable_get('mandrill_batch_log_queued', TRUE)) {
+      if ($config->get('mandrill_batch_log_queued')) {
         watchdog('mandrill', 'Message from %from to %to queued for delivery.',
           array(
             '%from' => $from['email'],

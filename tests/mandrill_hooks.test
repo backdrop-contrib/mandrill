@@ -37,8 +37,8 @@ class MandrillHooksTestCase extends BackdropWebTestCase {
       'entity',
     );
     parent::setUp($enabled_modules);
-    variable_set('mandrill_api_classname', 'BackdropMandrillTest');
-    variable_set('mandrill_api_key', 'MANDRILL_TEST_API_KEY');
+    config_set('mandrill.settings', 'mandrill_api_classname', 'BackdropMandrillTest');
+    config_set('mandrill.settings', 'mandrill_api_key', 'MANDRILL_TEST_API_KEY');
   }
 
   /**
@@ -49,9 +49,10 @@ class MandrillHooksTestCase extends BackdropWebTestCase {
   protected function tearDown() {
     parent::tearDown();
 
-    variable_del('mandrill_api_classname');
-    variable_del('mandrill_api_key');
-    variable_del('mandrill_test_mailsend_result');
+    //variable_del('mandrill_api_classname');
+    //variable_del('mandrill_api_key');
+    //variable_del('mandrill_test_mailsend_result');
+    // @todo ^^ is this needed?
   }
 
   /**
@@ -114,7 +115,7 @@ class MandrillHooksTestCase extends BackdropWebTestCase {
 
     $mail_system->mail($message);
 
-    $mailsend_result = variable_get('mandrill_test_mailsend_result', NULL);
+    $mailsend_result = config_get('mandrill.settings', 'mandrill_test_mailsend_result');// @todo huh?
 
     $this->assertNotNull($mailsend_result, 'Tested mailsend_result hook triggered.');
 

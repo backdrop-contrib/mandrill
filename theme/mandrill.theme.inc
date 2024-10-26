@@ -24,7 +24,7 @@ function template_preprocess_mandrill_message(&$variables) {
   $theme = mailsystem_get_mail_theme();
   $themepath = backdrop_get_path('theme', $theme);
 
-  $sitestyle = variable_get('mandrill_sitestyle', 1);
+  $sitestyle = config_get('mandrill.settings', 'mandrill_sitestyle');
   $mailstyles = file_scan_directory($themepath, '#^mail\.css*$#');
 
   // Check recursively for the existence of a mail.css file in the theme folder.
@@ -51,7 +51,7 @@ function template_preprocess_mandrill_message(&$variables) {
         $css_files[$key] = $options;
       }
     }
-    if (variable_get('preprocess_css', FALSE)) {
+    if (config_get('system.core', 'preprocess_css')) {
       $pattern = '|<link.*href="' . $GLOBALS['base_url'] . '/([^"?]*)[?"].*|';
       $replacement = '\1';
     }
