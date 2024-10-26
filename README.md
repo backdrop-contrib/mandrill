@@ -1,4 +1,4 @@
-## Mandrill
+# Mandrill
 
 Integrates Backdrop's mail system with Mandrill transactional emails, a service
 by the folks behind MailChimp. Learn more about Mandrill and how to sign up at
