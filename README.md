@@ -1,37 +1,21 @@
-## SUMMARY
+## Mandrill
 
 Integrates Backdrop's mail system with Mandrill transactional emails, a service
 by the folks behind MailChimp. Learn more about Mandrill and how to sign up at
 [their website](http://mandrill.com). (Or don't, but then this module isn't
 terribly useful...)
 
-## REQUIREMENTS
+## Requirements
 
-* mailsystem module (https://drupal.org/project/mailsystem)
-* Mandrill PHP library (https://bitbucket.org/mailchimp/mandrill-api-php/get/1.0.52.zip)
+- Mailsystem
 
-## INSTALLATION
-* You need to have a Mandrill API Key.
-* The Mandrill library must be downloaded into your libraries folder. It's
-  available at https://bitbucket.org/mailchimp/mandrill-api-php/get/1.0.52.zip
-  or by using the included example drush make file.
-  Proper libraries structure:
-    - libraries/
-      - mandrill/
-        - docs/
-        - src/
-          - Mandrill.php
-          - Mandrill/
-        - LICENSE
-        - composer.json
+## Installation
 
-## INSTALLATION NOTES
+- Install this module using the official 
+  [Backdrop CMS instructions](https://backdropcms.org/guide/modules)
+- You need to have a Mandrill API Key.
 
-* If you are upgrading from one of many previous versions, You may find an extra
-  Mail System class in the Mailsystem configuration called "Mandrill module
-  class". It's harmless, but feel free to delete it.
-
-## CONFIGURATION
+## Configuration
 
 ### Set Mandrill API Key
 Start by loading up the Mandrill admin page at Configuration -> Web
@@ -76,7 +60,7 @@ are sent equal to the specified Batch Size.
 * **Batch Size** The number of messages to send when Cron triggers. Must be
 greater than 0.
 
-### SEND TEST EMAIL
+### Send test mail
 
 The Send Test Email function is pretty self-explanatory. The To: field will
 accept multiple addresses formatted in any Backdrop mail system approved way.
@@ -85,7 +69,7 @@ use this tool to test outgoing mail for any installed mailer.
 
 ### Update Mail System settings
 Mandrill Mail interface is enabled by using the
-[Mail System module](http://drupal.org/project/mailsystem). Go to the
+[Mail System module](https://backdropcms.org/project/mailsystem). Go to the
 [Mail System configuration page](admin/config/system/mailsystem) to start
 sending emails through Mandrill. Once you do this, you'll see a list of the
 module keys that are using Mandrill listed near the top of the Mandrill
@@ -157,3 +141,22 @@ If you would like to use additional template (or other) Mandrill API
 variables not implemented in this module, set them in hook_mail_alter under:
 $params['mandrill']. Have a look at mandrill.mail.inc to learn more.
 (Search for "mandrill parameters".)
+
+## Current Maintainers
+
+- [Indigoxela](https://github.com/indigoxela)
+- Seeking additional maintainers
+
+## Credits
+
+This module is based on the Mandrill module for Drupal, originally written and
+maintained by a large number of contributors, including:
+
+- levelos https://www.drupal.org/u/levelos
+- ruscoe https://www.drupal.org/u/ruscoe
+- gcb https://www.drupal.org/u/gcb
+
+## License
+
+This project is GPL v2 software. See the [LICENSE.txt](https://github.com/backdrop-contrib/i18n/blob/1.x-1.x/LICENSE.txt) 
+file in this directory for complete text.
