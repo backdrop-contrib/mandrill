@@ -85,9 +85,9 @@ mail system settings page, you may see some modules listed without keys. For
 more details about this, see the help text on the mail system configuration
 page.
 
-# Sub-modules
+## Sub-modules
 
-## Templates
+### Templates
 
 In order to use the mandrill_template module, start by creating some templates
 in your Mandrill account. Once you do, you can add one or more Mandrill
@@ -122,23 +122,23 @@ You should also consider enabling the css-inline feature in your Mandrill
 account under Settings -> Sending Options. For more info, see
 "http://help.mandrill.com/entries/24460141-Does-Mandrill-inline-CSS-automatically-".
 
-## Reports
+### Reports
 The mandrill_reports sub-module provides reports on various metrics. It may
 take a long time to load. This module is due for some attention.
 
-### Dashboard
+#### Dashboard
 Displays charts that show volume and engagement, along with a tabular list of
 URL interactions for the past 30 days.
 
-### Account Summary
+#### Account Summary
 Shows account information, quotas, and all-time usage stats.
 
-## Activity
+### Activity
 The Mandrill Activity sub-modules allows users to view email activity for any
 Backdrop entity with a valid email address. Configuration and usage details are in
 sub-module's README file.
 
-## Advanced Options
+### Advanced Options
 If you would like to use additional template (or other) Mandrill API
 variables not implemented in this module, set them in hook_mail_alter under:
 $params['mandrill']. Have a look at mandrill.mail.inc to learn more.
