@@ -106,6 +106,7 @@ keys: name and content.
 For example, for sending the value 'foo value' for the region 'foo' you
 can use this code:
 
+```php
 /**
  * Implements hook_mail_alter();
  */
@@ -115,6 +116,7 @@ function mymodule_mail_alter(&$message) {
     'content' => 'foo value',
   );
 }
+```
 
 You should also consider enabling the css-inline feature in your Mandrill
 account under Settings -> Sending Options. For more info, see
