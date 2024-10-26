@@ -144,6 +144,16 @@ variables not implemented in this module, set them in hook_mail_alter under:
 $params['mandrill']. Have a look at mandrill.mail.inc to learn more.
 (Search for "mandrill parameters".)
 
+## Issues
+
+Bugs and Feature requests should be reported in the
+[Issue Queue](https://github.com/backdrop-contrib/mandrill/issues)
+
+## Known issues
+
+Caution, submodules are still work in progress. Very likely they're not
+functional yet.
+
 ## Current Maintainers
 
 - [Indigoxela](https://github.com/indigoxela)
