@@ -142,7 +142,7 @@ function mandrill_activity_mapping_form_callback($form, &$form_state) {
  * Validation callback for mandrill_activity_entity_form().
  */
 function mandrill_activity_entity_form_validate($form, &$form_state) {
-  $extant_mc_entities = entity_load('mandrill_activity_entity');
+  $extant_mc_entities = entity_load_multiple('mandrill_activity_entity');
   $form_id = $form_state['mandrill_activity_entity']->mandrill_activity_entity_id;
   $form_bundle = $form_state['values']['bundle'];
   $form_entity_id = $form_state['values']['entity_type'];
@@ -199,9 +199,9 @@ function mandrill_activity_entity_form_submit($form, &$form_state) {
 function mandrill_activity_email_fieldmap_options($entity_type, $entity_bundle = NULL) {
   $options = array('' => t('-- Select --'));
 
-  $properties = entity_get_all_property_info($entity_type);
+  $properties = entity_plus_get_all_property_info($entity_type);
   if (isset($entity_bundle)) {
-    $info = entity_get_property_info($entity_type);
+    $info = entity_plus_get_property_info($entity_type);
     $properties = $info['properties'];
     if (isset($info['bundles'][$entity_bundle])) {
       $properties += $info['bundles'][$entity_bundle]['properties'];
@@ -209,7 +209,7 @@ function mandrill_activity_email_fieldmap_options($entity_type, $entity_bundle =
   }
 
   foreach ($properties as $key => $property) {
-    $type = isset($property['type']) ? entity_property_extract_innermost_type($property['type']) : 'text';
+    $type = isset($property['type']) ? entity_plus_property_extract_innermost_type($property['type']) : 'text';
     $is_entity = ($type == 'entity') || (bool) entity_get_info($type);
     // Leave entities out of this.
     if (!$is_entity) {
