@@ -12,7 +12,7 @@ function mandrill_template_entity_info() {
     'mandrill_template_map' => array(
       'label' => t('Mandrill Template Map'),
       'plural label' => t('Mandrill Template Maps'),
-      'controller class' => 'EntityAPIControllerExportable',
+      'controller class' => 'EntityPlusControllerExportable',
       'entity class' => 'MandrillTemplateMap',
       'base table' => 'mandrill_template_map',
       'uri callback' => 'entity_class_uri',
@@ -67,7 +67,7 @@ function mandrill_template_permission() {
  * @param null $name
  *   name of the template map entity
  *
- * @return array
+ * @return mixed
  *   array of template_map entities
  */
 function mandrill_template_map_load_entities($name = NULL) {
@@ -80,10 +80,10 @@ function mandrill_template_map_load_entities($name = NULL) {
  *
  * Will search for a default-system mapping if none is availble for a given key.
  * 
- * @param string $mailsystem
- *   Mail key to search for a template mapping.
+ * @param string $module
+ *   Module name, @todo an assuption.
  *
- * @return entity
+ * @return Entity|null
  *   Mandrill template map.
  */
 function mandrill_template_map_load_by_mailsystem($module_key, $module) {
@@ -96,8 +96,8 @@ function mandrill_template_map_load_by_mailsystem($module_key, $module) {
     ->execute();
   $module_match = FALSE;
   if (!empty($query_result['mandrill_template_map'])) {
-    $template_maps = entity_load('mandrill_template_map', array_keys($query_result['mandrill_template_map']));
-    if (count($template_maps) > 1) {
+    $template_maps = entity_load_multiple('mandrill_template_map', array_keys($query_result['mandrill_template_map']));
+    if ($template_maps && count($template_maps) > 1) {
       foreach ($template_maps as $template_map) {
         switch ($template_map->mailsystem_key) {
           case $module_key:
@@ -183,7 +183,7 @@ function mandrill_template_mandrill_mail_alter(&$mandrill_params, $message) {
  * @param array $template_content
  *   Associative array mapping template regions and content.
  *
- * @return array
+ * @return array|null
  *   Message response.
  */
 function mandrill_template_sender($message, $template_id, $template_content) {
@@ -215,4 +215,14 @@ function _mandrill_template_map_mailsystem_sort($a, $b) {
   }
   // Otherwise sort alphabetically, case-agnostic
   return strcasecmp($a, $b);
+}
+
+/**
+ * Implements hook_autoload_info().
+ */
+function mandrill_template_autoload_info() {
+  return array(
+   'MandrillTemplateMap' => 'lib/mandrill_template_map.entity.inc',
+   'MandrillTemplateMapUIController' => 'lib/mandrill_template_map.ui_controller.inc',
+  );
 }
