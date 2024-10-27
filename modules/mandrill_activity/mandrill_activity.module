@@ -11,7 +11,7 @@ function mandrill_activity_entity_info() {
   $return = array(
     'mandrill_activity_entity' => array(
       'label' => t('Mandrill Activity Entity'),
-      'controller class' => 'EntityAPIControllerExportable',
+      'controller class' => 'EntityPlusControllerExportable',
       'entity class' => 'MandrillActivityEntity',
       'base table' => 'mandrill_activity_entity',
       'uri callback' => 'entity_class_uri',
@@ -176,7 +176,10 @@ function mandrill_activity_page($entity, MandrillActivityEntity $mandrill_activi
  */
 function mandrill_activity_get_activity($email) {
   $mandrill = mandrill_get_api_object();
-  return $mandrill->messages->search("email:{$email}");
+  if ($mandrill && !empty($mandrill->messages)) {
+    return $mandrill->messages->search("email:{$email}");
+  }
+  return array();
 }
 
 /**
@@ -194,4 +197,14 @@ function mandrill_activity_permission() {
     'description' => t('Add, Delete, and Configure Mandrill Activity entity settings.'),
   );
   return $return;
+}
+
+/**
+ * Implements hook_autoload_info().
+ */
+function mandrill_activity_autoload_info() {
+  return array(
+    'MandrillActivityEntity' => 'lib/mandrill_activity.entity.inc',
+    'MandrillActivityUIController' => 'lib/mandrill_activity.ui_controller.inc',
+  );
 }

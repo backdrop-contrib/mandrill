@@ -5,6 +5,7 @@ backdrop = 1.x
 
 dependencies[] = mandrill
 dependencies[] = entity_plus
+dependencies[] = entity_ui
 
 files[] = lib/mandrill_activity.entity.inc
 files[] = lib/mandrill_activity.ui_controller.inc

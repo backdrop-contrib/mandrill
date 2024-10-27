@@ -21,10 +21,10 @@ class MandrillActivityEntity extends Entity {
     $enabled;
 
   /**
-   * Override constructor to set entity type.
+   * Implements EntityInterface::entityType().
    */
-  public function __construct(array $values = array()) {
-    parent::__construct($values, 'mandrill_activity_entity');
+  public function entityType() {
+    return 'mandrill_activity_entity';
   }
 
   /**
@@ -35,6 +35,23 @@ class MandrillActivityEntity extends Entity {
    */
   public function label() {
     return $this->label;
+  }
+
+  /**
+   * Implements EntityInterface::id().
+   */
+  public function id() {
+    return isset($this->mandrill_activity_entity_id) ? $this->mandrill_activity_entity_id : NULL;
+  }
+
+  /**
+   * Implements EntityInterface::uri().
+   */
+  public function uri() {
+    return array(
+      'path' => $this->entity_path . '/mandrill_activity',
+      'options' => array(),
+    );
   }
 
 }
