@@ -1,0 +1,11 @@
+[MandrillTestCase]
+name = 'Mandrill Tests'
+description = 'Test core Mandrill functionality.'
+group = Mandrill
+file = mandrill.test
+
+[MandrillHooksTestCase]
+name = 'Mandrill Hooks Tests'
+description = 'Tests Mandrill hook functionality.'
+group = Mandrill
+file = mandrill_hooks.test

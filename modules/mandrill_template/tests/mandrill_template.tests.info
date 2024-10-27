@@ -1,0 +1,5 @@
+[MandrillTemplateTestCase]
+name = 'Mandrill Template Tests'
+description = 'Tests Mandrill Template functionality.'
+group = Mandrill
+file = mandrill_template.test
