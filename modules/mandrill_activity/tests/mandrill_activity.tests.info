@@ -1,0 +1,5 @@
+[MandrillActivityTestCase]
+name = 'Mandrill Activity Tests'
+description = 'Tests Mandrill Activity functionality.'
+group = Mandrill
+file = mandrill_activity.test
