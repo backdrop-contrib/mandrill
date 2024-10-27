@@ -15,17 +15,41 @@ class MandrillTemplateMap extends Entity {
     $sections;
 
   /**
-   * Return a new entity instance of type mandrill_template_map.
+   * Implements EntityInterface::entityType().
    */
-  public function __construct(array $values = array()) {
-    parent::__construct($values, 'mandrill_template_map');
+  public function entityType() {
+    return 'mandrill_template_map';
+  }
+
+  /**
+   * Implements EntityInterface::label().
+   */
+  public function label() {
+    return $this->label;
+  }
+
+  /**
+   * Implements EntityInterface::id().
+   */
+  public function id() {
+    return isset($this->mandrill_template_map_entity_id) ? $this->mandrill_template_map_entity_id : NULL;
+  }
+
+  /**
+   * Implements EntityInterface::uri().
+   */
+  public function uri() {
+    return array(
+      'path' => 'admin/config/services/mandrill/templates/' . $this->id(),
+      'options' => array(),
+    );
   }
 
   /**
    * Specify URI.
    */
   protected function defaultUri() {
-    return array('path' => 'admin/config/services/mandrill/templates/' . $this->identifier());
+    return array('path' => 'admin/config/services/mandrill/templates/' . $this->id());
   }
 
 }
