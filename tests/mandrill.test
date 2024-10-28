@@ -3,8 +3,6 @@
  * @file
  * Test class and methods for the Mandrill module.
  */
-require_once __DIR__ . '/../libraries/mandrill/src/Mandrill.php';
-require __DIR__ . '/includes/mandrill_test.inc';
 
 class MandrillTestCase extends BackdropWebTestCase {
 

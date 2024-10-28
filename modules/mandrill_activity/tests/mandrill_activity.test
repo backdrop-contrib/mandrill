@@ -4,9 +4,6 @@
  * Test class and methods for the Mandrill Activity module.
  */
 
-require_once __DIR__ . '/../../../libraries/mandrill/src/Mandrill.php';
-require __DIR__ . '/../../../tests/includes/mandrill_test.inc';
-
 class MandrillActivityTestCase extends BackdropWebTestCase {
 
   protected $profile = 'testing';
