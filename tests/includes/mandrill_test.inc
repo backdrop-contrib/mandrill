@@ -13,6 +13,23 @@ require 'mandrill_urls_test.inc';
 require 'mandrill_users_test.inc';
 
 class BackdropMandrillTest extends BackdropMandrill {
+
+  public $urls;
+  public $subaccounts;
+  public $internal;
+  public $ips;
+  public $whitelists;
+  public $messages;
+  public $tags;
+  public $inbound;
+  public $rejects;
+  public $users;
+  public $exports;
+  public $templates;
+  public $senders;
+  public $webhooks;
+  public $metadata;
+
   /**
    * @see BackdropMandrill::__construct()
    */

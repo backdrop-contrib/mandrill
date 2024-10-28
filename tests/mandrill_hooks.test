@@ -4,21 +4,12 @@
  * Test class and methods for the Mandrill Test module.
  */
 
+require_once __DIR__ . '/../libraries/mandrill/src/Mandrill.php';
+require __DIR__ . '/includes/mandrill_test.inc';
+
 class MandrillHooksTestCase extends BackdropWebTestCase {
-  /**
-   * Returns info displayed in the test interface.
-   *
-   * @return array
-   *   Formatted as specified by simpletest.
-   */
-  public static function getInfo() {
-    // Note: getInfo() strings are not translated with t().
-    return array(
-      'name' => 'Mandrill Hooks Tests',
-      'description' => 'Tests Mandrill hook functionality.',
-      'group' => 'Mandrill',
-    );
-  }
+
+  protected $profile = 'testing';
 
   /**
    * Pre-test setup function.
@@ -27,32 +18,16 @@ class MandrillHooksTestCase extends BackdropWebTestCase {
    * Sets the mandrill_api_key variable to the test key.
    */
   protected function setUp() {
-    // Use a profile that contains required modules:
-    $prof = backdrop_get_profile();
-    $this->profile = $prof;
     // Enable modules required for the test.
     $enabled_modules = array(
       'mandrill',
       'mandrill_test',
       'entity',
+      'filter',
     );
     parent::setUp($enabled_modules);
     config_set('mandrill.settings', 'mandrill_api_classname', 'BackdropMandrillTest');
     config_set('mandrill.settings', 'mandrill_api_key', 'MANDRILL_TEST_API_KEY');
-  }
-
-  /**
-   * Post-test function.
-   *
-   * Sets test mode to FALSE.
-   */
-  protected function tearDown() {
-    parent::tearDown();
-
-    //variable_del('mandrill_api_classname');
-    //variable_del('mandrill_api_key');
-    //variable_del('mandrill_test_mailsend_result');
-    // @todo ^^ is this needed?
   }
 
   /**
@@ -115,7 +90,7 @@ class MandrillHooksTestCase extends BackdropWebTestCase {
 
     $mail_system->mail($message);
 
-    $mailsend_result = config_get('mandrill.settings', 'mandrill_test_mailsend_result');// @todo huh?
+    $mailsend_result = state_get('mandrill_test_mailsend_result');
 
     $this->assertNotNull($mailsend_result, 'Tested mailsend_result hook triggered.');
 
