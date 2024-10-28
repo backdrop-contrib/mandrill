@@ -24,6 +24,22 @@ class Mandrill {
     public $root = 'https://mandrillapp.com/api/1.0';
     public $debug = false;
 
+    public $templates;
+    public $exports;
+    public $users;
+    public $rejects;
+    public $inbound;
+    public $tags;
+    public $messages;
+    public $whitelists;
+    public $ips;
+    public $internal;
+    public $subaccounts;
+    public $urls;
+    public $webhooks;
+    public $senders;
+    public $metadata;
+
     public static $error_map = array(
         "ValidationError" => "Mandrill_ValidationError",
         "Invalid_Key" => "Mandrill_Invalid_Key",
