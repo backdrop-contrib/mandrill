@@ -64,7 +64,7 @@ class Mandrill_MessagesTest extends Mandrill_Messages {
       return $this->master->getErrorResponse(12, 'Unknown_Template', 'No template with name: ' . $template_name);
     }
 
-    $recipients = mandrill_get_to($message['to']);
+    $recipients = mandrill_get_to($message);
 
     foreach ($recipients as $recipient) {
       $recipient_response = array(

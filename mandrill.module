@@ -587,13 +587,13 @@ function mandrill_mail_key_blacklist() {
 /**
  * Helper to generate an array of recipients.
  *
- * @param $message array
+ * @param array $message
  *   An array containing the email data.
  *
  * @return array
  *   An array of email addresses.
  */
-function mandrill_get_to($message) {
+function mandrill_get_to(array $message) {
 
   // Turn comma-separated string of recipients into Mandrill-style array.
   // See https://mandrillapp.com/api/docs/messages.html for reference.
@@ -702,6 +702,23 @@ function mandrill_autoload_info() {
     'MandrillMailSystem' => 'lib/mandrill.mail.inc',
     'BackdropMandrill' => 'lib/mandrill.inc',
     'Mandrill' => 'libraries/mandrill/src/Mandrill.php',
+    // Mostly for tests.
+    'BackdropMandrillTest' => 'tests/includes/mandrill_test.inc',
+    'Mandrill_Templates' => 'libraries/mandrill/src/Mandrill/Templates.php',
+    'Mandrill_Inbound' => 'libraries/mandrill/src/Mandrill/Inbound.php',
+    'Mandrill_Ips' => 'libraries/mandrill/src/Mandrill/Ips.php',
+    'Mandrill_Exports' => 'libraries/mandrill/src/Mandrill/Exports.php',
+    'Mandrill_Senders' => 'libraries/mandrill/src/Mandrill/Senders.php',
+    'Mandrill_Internal' => 'libraries/mandrill/src/Mandrill/Internal.php',
+    'Mandrill_Urls' => 'libraries/mandrill/src/Mandrill/Urls.php',
+    'Mandrill_Messages' => 'libraries/mandrill/src/Mandrill/Messages.php',
+    'Mandrill_Whitelists' => 'libraries/mandrill/src/Mandrill/Whitelists.php',
+    'Mandrill_Webhooks' => 'libraries/mandrill/src/Mandrill/Webhooks.php',
+    'Mandrill_Rejects' => 'libraries/mandrill/src/Mandrill/Rejects.php',
+    'Mandrill_Users' => 'libraries/mandrill/src/Mandrill/Users.php',
+    'Mandrill_Metadata' => 'libraries/mandrill/src/Mandrill/Metadata.php',
+    'Mandrill_Subaccounts' => 'libraries/mandrill/src/Mandrill/Subaccounts.php',
+    'Mandrill_Tags' => 'libraries/mandrill/src/Mandrill/Tags.php',
   );
 }
 
