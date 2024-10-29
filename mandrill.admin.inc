@@ -298,7 +298,7 @@ function mandrill_test_form_submit($form, &$form_state) {
     $params['body'] = array('0' => $params['body']);
   }
   $result = backdrop_mail('mandrill', 'test', $test_address, $language, $params);
-  if (isset($result['result'])) {
+  if (!empty($result['result'])) {
     backdrop_set_message(t('Mandrill test email sent to %to.', array(
       '%to' => $result['to'],
     )), 'status');
