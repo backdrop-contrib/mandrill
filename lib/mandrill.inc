@@ -63,7 +63,7 @@ class BackdropMandrill extends Mandrill {
         'data' => $params,
         'headers' => array(
           'Content-Type' => 'application/json',
-          'Accept-Language' => language_default()->language,
+          'Accept-Language' => language_default()->langcode,
           'User-Agent' => $this->userAgent,
         ),
         'timeout' => $this->timeout,
