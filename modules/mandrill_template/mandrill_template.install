@@ -116,16 +116,8 @@ function mandrill_template_schema() {
 }
 
 /**
- * Extends the mailsystem_key field to support longer template key names.
+ * Implements hook_update_last_removed().
  */
-function mandrill_template_update_7001() {
-  db_change_field('mandrill_template_map', 'mailsystem_key', 'mailsystem_key',
-    array(
-      'description' => 'The mailsystem_key that is using this mandrill_template_map.',
-      'type' => 'varchar',
-      'length' => 255,
-      'not null' => FALSE,
-      'default' => '',
-    )
-  );
+function mandrill_template_update_last_removed() {
+  return 7001;
 }
