@@ -5,10 +5,6 @@ by the folks behind MailChimp. Learn more about Mandrill and how to sign up at
 [their website](http://mandrill.com). (Or don't, but then this module isn't
 terribly useful...)
 
-This module's in an early stage of porting, so not appropriate for
-production sites.
-But testing and feedback's welcome. And any help is highly appreciated.
-
 ## Requirements
 
 - Mailsystem
