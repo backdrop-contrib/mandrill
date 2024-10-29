@@ -98,8 +98,9 @@ function mandrill_mail($key, &$message, $params) {
     $message['subject'] = $params['subject'];
     $message['body'] = $params['body'];
     if ($params['include_attachment']) {
-      $message['attachments'][] = backdrop_realpath('core/misc/icon-ok.png');
-      $message['body'] .= '  ' . t('The Backdrop OK icon is included as an attachment to test the attachment functionality.');
+      $path = BACKDROP_ROOT . '/' . backdrop_get_path('module', 'mandrill');
+      $message['attachments'][] = $path . '/img/drop-launching.png';
+      $message['body'] .= '  ' . t('The Backdrop mascot is included as an attachment to test the attachment functionality.');
     }
   }
 }
