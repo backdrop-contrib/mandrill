@@ -26,3 +26,35 @@ function mandrill_disable() {
 function mandrill_update_last_removed() {
   return 7004;
 }
+
+/**
+ * Convert variables to config.
+ */
+function mandrill_update_1000() {
+  $config = config('mandrill.settings');
+  if (!$config->isNew()) {
+    return;
+  }
+
+  $path = backdrop_get_path('module', 'mandrill') . '/config';
+  $contents = file_get_contents($path . '/mandrill.settings.json');
+  $data_default = json_decode($contents, TRUE);
+  $config->setData($data_default);
+
+  $keys = array_keys($data_default);
+  unset($keys[0]);
+  $vars_to_delete = array();
+
+  foreach ($keys as $name) {
+    $existing_setting = update_variable_get($name);
+    if ($existing_setting !== NULL) {
+      $config->set($name, $existing_setting);
+      $vars_to_delete[] = $name;
+    }
+  }
+  $config->save();
+
+  foreach ($vars_to_delete as $name) {
+    update_variable_del($name);
+  }
+}
