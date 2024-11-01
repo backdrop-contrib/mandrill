@@ -1,7 +1,9 @@
+type = module
 name = Mandrill
 description = "Allow for site emails to be sent through Mandrill."
 backdrop = 1.x
 package = Mandrill
+maintainers[indigoxela] = indigoxela
 
 configure = admin/config/services/mandrill
 

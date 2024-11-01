@@ -1,3 +1,4 @@
+type = module
 name = Mandrill Template
 description = "Use Mandrill templates for messages sent through Mandrill."
 backdrop = 1.x

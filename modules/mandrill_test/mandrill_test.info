@@ -1,3 +1,4 @@
+type = module
 name = Mandrill Test
 description = "Used to test Mandrill API hooks. DO NOT ENABLE UNLESS YOU KNOW WHAT YOU ARE DOING. This module is for the purpose of testing Mandrill only."
 backdrop = 1.x

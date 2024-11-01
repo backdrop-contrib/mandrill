@@ -1,3 +1,4 @@
+type = module
 name = Mandrill Reports
 description = "Providing reporting on activity through Mandrill."
 backdrop = 1.x
