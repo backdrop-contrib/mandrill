@@ -1,3 +1,4 @@
+type = module
 name = Mandrill Activity
 description = View activity for an email address associated with any entity.
 package = Mandrill
