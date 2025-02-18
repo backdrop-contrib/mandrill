@@ -197,11 +197,11 @@ function mandrill_admin_settings($form, &$form_state) {
     );
     $form['asynchronous_options']['mandrill_queue_worker_timeout'] = array(
       '#title' => t('Queue worker timeout'),
-      '#type' => 'textfield',
-      '#size' => '12',
+      '#type' => 'number',
       '#description' => t('Number of seconds to spend processing messages during cron. Zero or negative values are not allowed.'),
       '#required' => TRUE,
-      '#element_validate' => array('element_validate_integer_positive'),
+      '#min' => 1,
+      '#max' => 180,
       '#default_value' => $config->get('mandrill_queue_worker_timeout'),
       '#states' => array(
         'invisible' => array(
